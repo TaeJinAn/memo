@@ -1,5 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
+import { useMemoSlice } from 'store/memo';
+import { useDispatch } from 'react-redux';
 
 const Box = styled.div<{ selected?: boolean }>`
   width: 100%;
@@ -40,16 +42,15 @@ export default function MemoItem({
   preview,
   created_at,
   selected,
-  content,
-}: {
-  id: string;
-  preview: string;
-  created_at: string;
-  selected: boolean;
-  content: string;
-}) {
+}: MemoItem) {
+  const { MemoActions } = useMemoSlice();
+  const dispatch = useDispatch();
+
   return (
-    <Box selected={selected}>
+    <Box
+      selected={selected}
+      onClick={() => dispatch(MemoActions.selectMemo({ id: id }))}
+    >
       <MemoTitle>{preview}</MemoTitle>
       <MemoContent>{new Date(created_at).toLocaleDateString('ko')}</MemoContent>
       <MemoContent>{preview}</MemoContent>
